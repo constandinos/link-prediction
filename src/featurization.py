@@ -72,6 +72,7 @@ def preferential_attachment(G, df_edges, df_features):
 def clustering_coef(G, df_edges, df_features):
     """
     Calculating clustering coefficient of nodes.
+    https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.cluster.clustering.html#networkx.algorithms.cluster.clustering
 
     Parameters
     ----------
