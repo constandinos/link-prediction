@@ -1,3 +1,5 @@
+# petster-hamster-household.txt
+
 from sklearn.utils import shuffle
 import networkx as nx
 import pandas as pd
@@ -21,7 +23,7 @@ def read_data(filename):
     """
 
     # read dataset into dataframes
-    dataset_df = pd.read_csv(filename, sep=' ', header=None)
+    dataset_df = pd.read_csv(filename, sep='\t', header=None)
     dataset_df = dataset_df.iloc[:, 0:2]
     dataset_df.columns = ['source_node', 'destination_node']
 
@@ -81,6 +83,11 @@ def get_largest_component(dataset_df):
 
         # create a dataframe with edges
         edges_df = pd.DataFrame({'source_node': source_node_list, 'destination_node': destination_node_list})
+
+        print('Info about largest connected component:')
+        print(print(nx.info(S)))
+        print()
+
     else:
         edges_df = dataset_df
 
@@ -167,9 +174,9 @@ def generate_negative_edges(df_pos, G):
             if b < a:
                 a = b
                 b = temp
-            # nx.has_path(G, a, b)
-            if G.has_node(a) and G.has_node(b) and nx.shortest_path_length(G, source=a, target=b) > 2:
-                missing_edges.add((a, b))
+            if G.has_node(a) and G.has_node(b):
+                if not nx.has_path(G, a, b) or nx.shortest_path_length(G, source=a, target=b) > 2:
+                    missing_edges.add((a, b))
             else:
                 continue
 
@@ -223,19 +230,19 @@ fileout = filein.split('.')[0]
 dataset_df = read_data('../dataset/' + filein)
 
 # find the larget connected component on graph
-df_pos = get_largest_component(dataset_df)
+# df_pos = get_largest_component(dataset_df)
 
 # create nodes
 # create_nodes(df_pos, fileout)
 
 # create edges
-create_edges(df_pos, fileout)
+create_edges(dataset_df, fileout)
 
 # create graph
-G = nx.from_pandas_edgelist(df_pos, 'source_node', 'destination_node', create_using=nx.Graph())
+G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.Graph())
 
 # generate negative edges
-df_neg = generate_negative_edges(df_pos, G)
+df_neg = generate_negative_edges(dataset_df, G)
 
 # create all edges
-create_all_edges(df_pos, df_neg)
+create_all_edges(dataset_df, df_neg)
