@@ -1,5 +1,4 @@
-# python process_dataset.py petster-hamster-household.txt -undirected
-# python process_dataset.py wiki-vote.txt -directed
+# python process_dataset.py petster-hamster-household.txt
 
 from sklearn.utils import shuffle
 import networkx as nx
@@ -138,7 +137,7 @@ def create_edges(dataset_df, fileout):
     dataset_df.to_csv('../dataset/' + fileout + '_edges.csv', index=False)
 
 
-def generate_negative_edges(df_pos, G, directed):
+def generate_negative_edges(df_pos, G):
     """
     Generating some edges which are not present in graph for supervised learning.
 
@@ -148,8 +147,6 @@ def generate_negative_edges(df_pos, G, directed):
         The possitive edges
     G: networkx
         The graph
-    directed: bool
-        True if graph is directed, else False
 
     Returns
     -------
@@ -171,7 +168,7 @@ def generate_negative_edges(df_pos, G, directed):
     while len(missing_edges) < num_edges:
         a = random.randint(1, num_nodes)
         b = random.randint(1, num_nodes)
-        if not directed and b < a:
+        if b < a:
             temp = a
             a = b
             b = temp
@@ -229,15 +226,6 @@ def create_all_edges(df_pos, df_neg):
 filein = sys.argv[1]
 fileout = filein.split('.')[0]
 
-# define if graph is directed
-if sys.argv[2] == '-directed':
-    directed = True
-elif sys.argv[2] == '-undirected':
-    directed = False
-else:
-    print('Error: The graph must be directed or undirected')
-    sys.exit(1)
-
 # read dataset
 dataset_df = read_data('../dataset/' + filein)
 
@@ -251,16 +239,13 @@ dataset_df = read_data('../dataset/' + filein)
 # create_edges(dataset_df, fileout)
 
 # create graph
-if directed:
-    G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.DiGraph())
-else:
-    G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.Graph())
+G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.Graph())
 
 print('Info about graph:')
 print(print(nx.info(G)))
 
 # generate negative edges
-df_neg = generate_negative_edges(dataset_df, G, directed)
+df_neg = generate_negative_edges(dataset_df, G)
 
 # create all edges
 create_all_edges(dataset_df, df_neg)

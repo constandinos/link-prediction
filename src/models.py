@@ -1,4 +1,4 @@
-# petster-hamster-household_edges_class_features.csv
+# python model.py petster-hamster-household_edges_features.csv
 
 import sys
 import pandas as pd
