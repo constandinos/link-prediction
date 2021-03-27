@@ -1,4 +1,5 @@
 # python featurization.py petster-hamster-household_edges.csv
+# python featurization.py soc-hamsterster_edges.csv
 
 import networkx as nx
 import pandas as pd

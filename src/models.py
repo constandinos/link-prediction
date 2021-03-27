@@ -1,8 +1,9 @@
 # python model.py petster-hamster-household_edges_features.csv
+# python model.py soc-hamsterster_edges_features.csv
 
 import sys
 import pandas as pd
-from sklearn import model_selection, tree
+from sklearn import model_selection
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -10,13 +11,11 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.tree import DecisionTreeClassifier, plot_tree, export_graphviz
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 import matplotlib.pyplot as plt
-from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix
-import graphviz
-
+from sklearn.metrics import roc_curve, roc_auc_score
 from tabulate import tabulate
+
 
 def cross_validation(estimator, X, y, score_type, k_folds, num_cpus):
     """
@@ -49,7 +48,8 @@ def cross_validation(estimator, X, y, score_type, k_folds, num_cpus):
     kfold = model_selection.KFold(n_splits=k_folds, shuffle=True, random_state=0)
 
     # k-fold cross validation
-    score = model_selection.cross_val_score(estimator, X, y.values.ravel(), cv=kfold, scoring=score_type, n_jobs=num_cpus)
+    score = model_selection.cross_val_score(estimator, X, y.values.ravel(), cv=kfold, scoring=score_type,
+                                            n_jobs=num_cpus)
     # append results to the return lists
     avg_accuracy = score.mean()
     std_accuracy = score.std()
@@ -182,9 +182,9 @@ def predict_probabilities(X, y, model_names, best_estimators):
             export_graphviz(clf, out_file='../results/tree.dot', class_names=['negative_edge', 'possitive_edge'],
                             feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef'],
                             impurity=False, filled=True)
-            #with open('../results/tree.dot') as f:
+            # with open('../results/tree.dot') as f:
             #    dot_graph = f.read()
-            #graphviz.Source(dot_graph).view('../results/decision_tree')
+            # graphviz.Source(dot_graph).view('../results/decision_tree')
 
         # weights from logistic regression
         if model_names[i] == 'LogisticRegression':
@@ -225,7 +225,7 @@ def plot_roc_curve(model_names, pred_prob, y_test):
         auc_score = roc_auc_score(y_test, pred_prob[i][:, 1])
         auc_list.append('{:.2f}'.format(auc_score * 100))
         # plot roc curves
-        plt.plot(fpr, tpr, color=colors[i], label=esti + ' (AUC=' + '{:.2f}'.format(auc_score*100) + '%)')
+        plt.plot(fpr, tpr, color=colors[i], label=esti + ' (AUC=' + '{:.2f}'.format(auc_score * 100) + '%)')
 
     # roc curve for tpr = fpr
     random_probs = [0 for i in range(len(y_test))]
@@ -274,7 +274,6 @@ sc_X = StandardScaler()
 X = sc_X.fit_transform(X)
 
 # create list with all possible parameters for each estimator
-"""
 clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg', 'lbfgs', 'liblinear'],
                                                           'max_iter': [100, 500, 1000]}),
             ('kNN', KNeighborsClassifier(), {'n_neighbors': [5, 10, 15, 20],
@@ -287,7 +286,9 @@ clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg'
                                                         'max_features': ['auto', 'sqrt', 'log2']}),
             ('RandomForest', RandomForestClassifier(), {'n_estimators': [100, 500, 1000],
                                                         'criterion': ['gini', 'entropy'],
-                                                        'max_features': ['auto', 'sqrt', 'log2']})]
+                                                        'max_features': ['auto', 'sqrt', 'log2']}),
+            ('GaussianNB', GaussianNB(), {})]
+
 """
 clf_list = [('LogisticRegression', LogisticRegression(), {}),
             ('kNN', KNeighborsClassifier(), {}),
@@ -297,8 +298,8 @@ clf_list = [('LogisticRegression', LogisticRegression(), {}),
             ('DecisionTree', DecisionTreeClassifier(), {}),
             ('RandomForest', RandomForestClassifier(), {}),
             ('GaussianNB', GaussianNB(), {})]
+"""
 
-# clf_list = [('LogisticRegression', LogisticRegression(), {})]
 # grid search and cross validation
 model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y)
 
@@ -315,5 +316,6 @@ y_test, pred_prob = predict_probabilities(X, y, model_names, best_estimators)
 # plot ROC AUC curve
 auc_list = plot_roc_curve(model_names, pred_prob, y_test)
 
-df = pd.DataFrame({'Model': model_names, 'Accuracy(%)': kfold_accuracy, 'Std(%)': kfold_std, 'AUC(%)': auc_list, 'BestParameters': best_parameters})
+df = pd.DataFrame({'Model': model_names, 'Accuracy(%)': kfold_accuracy, 'Std(%)': kfold_std, 'AUC(%)': auc_list,
+                   'BestParameters': best_parameters})
 print(tabulate(df, headers='keys', showindex=False))

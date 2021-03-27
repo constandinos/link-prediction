@@ -1,4 +1,5 @@
 # python process_dataset.py petster-hamster-household.txt
+# python process_dataset.py soc-hamsterster.txt
 
 from sklearn.utils import shuffle
 import networkx as nx
@@ -23,7 +24,7 @@ def read_data(filename):
     """
 
     # read dataset into dataframes
-    dataset_df = pd.read_csv(filename, sep='[ \t]', engine='python', header=None)
+    dataset_df = pd.read_csv(filename, sep='[ \t,]', engine='python', header=None)
     dataset_df = dataset_df.iloc[:, 0:2]
     dataset_df.columns = ['source_node', 'destination_node']
 
