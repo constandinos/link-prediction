@@ -1,4 +1,5 @@
-# petster-hamster-household_edges_class.csv
+# python process_dataset.py petster-hamster-household_edges.csv -undirected
+# python process_dataset.py wiki-vote_edges.csv -directed
 
 import networkx as nx
 import pandas as pd
@@ -97,8 +98,17 @@ def clustering_coef(G, df_edges, df_features):
 # =============================================================================#
 
 # define input and output files
-filein = sys.argv[1] # eg. facebook-wosn-links_edges_class.csv
+filein = sys.argv[1]
 fileout = filein.split('.')[0]
+
+# define if graph is directed
+if sys.argv[2] == '-directed':
+    directed = True
+elif sys.argv[2] == '-undirected':
+    directed = False
+else:
+    print('Error: The graph must be directed or undirected')
+    sys.exit(1)
 
 # read input data
 df_features = pd.read_csv('../dataset/' + filein)
@@ -114,7 +124,10 @@ print(df_pos)
 print()
 
 # create graph
-G = nx.from_pandas_edgelist(df_pos, 'source_node', 'destination_node', create_using=nx.Graph())
+if directed:
+    G = nx.from_pandas_edgelist(df_pos, 'source_node', 'destination_node', create_using=nx.DiGraph())
+else:
+    G = nx.from_pandas_edgelist(df_pos, 'source_node', 'destination_node', create_using=nx.Graph())
 
 # get features
 jaccards_coefficient(G, df_edges, df_features)

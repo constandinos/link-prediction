@@ -1,4 +1,5 @@
-# petster-hamster-household.txt
+# python process_dataset.py petster-hamster-household.txt -undirected
+# python process_dataset.py wiki-vote.txt -directed
 
 from sklearn.utils import shuffle
 import networkx as nx
@@ -23,7 +24,7 @@ def read_data(filename):
     """
 
     # read dataset into dataframes
-    dataset_df = pd.read_csv(filename, sep='\t', header=None)
+    dataset_df = pd.read_csv(filename, sep='[ \t]', engine='python', header=None)
     dataset_df = dataset_df.iloc[:, 0:2]
     dataset_df.columns = ['source_node', 'destination_node']
 
@@ -137,7 +138,7 @@ def create_edges(dataset_df, fileout):
     dataset_df.to_csv('../dataset/' + fileout + '_edges.csv', index=False)
 
 
-def generate_negative_edges(df_pos, G):
+def generate_negative_edges(df_pos, G, directed):
     """
     Generating some edges which are not present in graph for supervised learning.
 
@@ -147,6 +148,8 @@ def generate_negative_edges(df_pos, G):
         The possitive edges
     G: networkx
         The graph
+    directed: bool
+        True if graph is directed, else False
 
     Returns
     -------
@@ -168,12 +171,12 @@ def generate_negative_edges(df_pos, G):
     while len(missing_edges) < num_edges:
         a = random.randint(1, num_nodes)
         b = random.randint(1, num_nodes)
+        if not directed and b < a:
+            temp = a
+            a = b
+            b = temp
         tmp = edges_dict.get((a, b), -1)
         if tmp == -1 and a != b:
-            temp = a
-            if b < a:
-                a = b
-                b = temp
             if G.has_node(a) and G.has_node(b):
                 if not nx.has_path(G, a, b) or nx.shortest_path_length(G, source=a, target=b) > 2:
                     missing_edges.add((a, b))
@@ -212,7 +215,7 @@ def create_all_edges(df_pos, df_neg):
     df_class = shuffle(df_class)
 
     # write edges a file
-    df_class.to_csv('../dataset/' + fileout + '_edges_class.csv', index=False)
+    df_class.to_csv('../dataset/' + fileout + '_edges.csv', index=False)
     print('All edges:')
     print(df_class)
     print()
@@ -223,8 +226,17 @@ def create_all_edges(df_pos, df_neg):
 # =============================================================================#
 
 # define input and output files
-filein = sys.argv[1]  # eg. facebook-wosn-links.txt
+filein = sys.argv[1]
 fileout = filein.split('.')[0]
+
+# define if graph is directed
+if sys.argv[2] == '-directed':
+    directed = True
+elif sys.argv[2] == '-undirected':
+    directed = False
+else:
+    print('Error: The graph must be directed or undirected')
+    sys.exit(1)
 
 # read dataset
 dataset_df = read_data('../dataset/' + filein)
@@ -236,13 +248,19 @@ dataset_df = read_data('../dataset/' + filein)
 # create_nodes(df_pos, fileout)
 
 # create edges
-create_edges(dataset_df, fileout)
+# create_edges(dataset_df, fileout)
 
 # create graph
-G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.Graph())
+if directed:
+    G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.DiGraph())
+else:
+    G = nx.from_pandas_edgelist(dataset_df, 'source_node', 'destination_node', create_using=nx.Graph())
+
+print('Info about graph:')
+print(print(nx.info(G)))
 
 # generate negative edges
-df_neg = generate_negative_edges(dataset_df, G)
+df_neg = generate_negative_edges(dataset_df, G, directed)
 
 # create all edges
 create_all_edges(dataset_df, df_neg)

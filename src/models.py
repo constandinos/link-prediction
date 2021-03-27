@@ -182,9 +182,9 @@ def predict_probabilities(X, y, model_names, best_estimators):
             export_graphviz(clf, out_file='../results/tree.dot', class_names=['negative_edge', 'possitive_edge'],
                             feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef'],
                             impurity=False, filled=True)
-            with open('../results/tree.dot') as f:
-                dot_graph = f.read()
-            graphviz.Source(dot_graph).view('../results/decision_tree')
+            #with open('../results/tree.dot') as f:
+            #    dot_graph = f.read()
+            #graphviz.Source(dot_graph).view('../results/decision_tree')
 
         # weights from logistic regression
         if model_names[i] == 'LogisticRegression':
