@@ -5,13 +5,15 @@ declare -a StringArray=("petster-hamster-household" "soc-hamsterster" "erdos" "m
  
 # Iterate the string array using for loop
 for val in ${StringArray[@]}; do
-	mkdir figures
-	mkdir results
 	
-	python process_dataset.py $val".txt" > $val".out" 2> $val".err"
-	python featurization.py $val"_edges.csv" >> $val".out" 2>> $val".err"
-	python model.py $val"_edges_features.csv" >> $val".out" 2>> $val".err"
+	mkdir results	
+	cd src/
 	
-	mv "figures" "figures_"$val
+	python process_dataset.py $val".txt" > ../results/$val".out" 2> ../results/$val".err"
+	python featurization.py $val"_edges.csv" >> ../results/$val".out" 2>> ../results/$val".err"
+	python model.py $val"_edges_features.csv" >> ../results/$val".out" 2>> ../results/$val".err"
+	
+	cd ..
 	mv "results" "results_"$val
+	
 done

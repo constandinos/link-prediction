@@ -139,7 +139,7 @@ def plot_results(x_labels, y_labels, type_name):
     plt.ylabel(type_name + ' (%)')
     y_labels = [float(x) for x in y_labels]
     plt.bar(x_labels, y_labels)
-    plt.savefig('../figures/' + type_name + '.png')
+    plt.savefig('../results/' + type_name + '.png')
     plt.clf()
 
 
@@ -239,7 +239,7 @@ def plot_roc_curve(model_names, pred_prob, y_test):
     # y label
     plt.ylabel('True Positive rate')
     plt.legend()
-    plt.savefig('../figures/roc.png')
+    plt.savefig('../results/roc.png')
     plt.clf()
 
     return auc_list
