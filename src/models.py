@@ -57,7 +57,7 @@ def cross_validation(estimator, X, y, score_type, k_folds, num_cpus):
     return avg_accuracy, std_accuracy
 
 
-def grid_search_cross_validation(clf_list, X, y, score_type='accuracy', k_folds=5, num_cpus=17):
+def grid_search_cross_validation(clf_list, X, y, num_cpus, score_type='accuracy', k_folds=5):
     """
     Applies grid search to search over specified parameter values for an estimator
     to find the optimal parameters for a machine learning algorithm.
@@ -74,12 +74,12 @@ def grid_search_cross_validation(clf_list, X, y, score_type='accuracy', k_folds=
         The  data
     y: numpy array
         The labels of data
+    num_cpus: int
+        The number of cpus that will use this function
     score_type: string
         The name of score type
     k_folds: integer
         The number of folds
-    num_cpus: int
-        The number of cpus that will use this function
 
     Returns
     -------
@@ -249,8 +249,9 @@ def plot_roc_curve(model_names, pred_prob, y_test):
 #                                      MAIN                                    #
 # =============================================================================#
 
-# define input files
+# define input files and num of cpus
 filein = sys.argv[1]  # eg. facebook-wosn-links_edges_class_features.csv
+num_cpus = int(sys.argv[2])
 
 # read input data
 df_features = pd.read_csv('../dataset/' + filein)
@@ -289,19 +290,9 @@ clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg'
                                                         'max_features': ['auto', 'sqrt', 'log2']}),
             ('GaussianNB', GaussianNB(), {})]
 
-"""
-clf_list = [('LogisticRegression', LogisticRegression(), {}),
-            ('kNN', KNeighborsClassifier(), {}),
-            ('MLP', MLPClassifier(), {'activation': ['tanh'],
-                                      'learning_rate': ['constant'],
-                                      'max_iter': [200]}),
-            ('DecisionTree', DecisionTreeClassifier(), {}),
-            ('RandomForest', RandomForestClassifier(), {}),
-            ('GaussianNB', GaussianNB(), {})]
-"""
-
 # grid search and cross validation
-model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y)
+model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y,
+                                                                                                        num_cpus)
 
 # print results
 header_label = ['Model', 'Accuracy', 'Std', 'BestParameters']
