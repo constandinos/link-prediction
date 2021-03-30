@@ -1,7 +1,7 @@
 #!/bin/bash
  
 # Declare an array of string with type
-declare -a StringArray=("petster-hamster-household" "soc-hamsterster" "erdos" "musae" "facebook-wosn-links" )
+declare -a StringArray=("hamsterster" "github" "deezer")
  
 # Iterate the string array using for loop
 for val in ${StringArray[@]}; do
