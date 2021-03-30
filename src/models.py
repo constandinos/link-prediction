@@ -57,7 +57,7 @@ def cross_validation(estimator, X, y, score_type, k_folds, num_cpus):
     return avg_accuracy, std_accuracy
 
 
-def grid_search_cross_validation(clf_list, X, y, score_type='accuracy', k_folds=5, num_cpus=-1):
+def grid_search_cross_validation(clf_list, X, y, score_type='accuracy', k_folds=5, num_cpus=17):
     """
     Applies grid search to search over specified parameter values for an estimator
     to find the optimal parameters for a machine learning algorithm.
