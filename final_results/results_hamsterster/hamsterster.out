@@ -1,0 +1,166 @@
+Dataset:
+       source_node  destination_node
+0               99                98
+1              999               550
+2              999               549
+3              999                42
+4              999                25
+...            ...               ...
+16626         1000               999
+16627         1000               550
+16628         1000               549
+16629         1000                42
+16630         1000                25
+
+[16631 rows x 2 columns]
+
+Info about graph:
+Name: 
+Type: Graph
+Number of nodes: 2426
+Number of edges: 16631
+Average degree:  13.7106
+None
+Negative edges:
+       source_node  destination_node
+0              541              2422
+1              396              1546
+2              427               859
+3             1141              2188
+4               74              1266
+...            ...               ...
+16626           30              1038
+16627         1673              2342
+16628         2270              2332
+16629          110              1970
+16630         2374              2389
+
+[16631 rows x 2 columns]
+
+All edges:
+       source_node  destination_node  class
+1503          1503              2423      0
+6975           452               396      1
+2308            98              2357      0
+1184          1280              2202      0
+15368         1146               912      1
+...            ...               ...    ...
+14475          127               126      1
+2658          1027              2164      0
+2126           909              1123      0
+8718          1001              2041      0
+5519           537               415      1
+
+[33262 rows x 3 columns]
+
+Edges with classes:
+       source_node  destination_node  class
+0             1503              2423      0
+1              452               396      1
+2               98              2357      0
+3             1280              2202      0
+4             1146               912      1
+...            ...               ...    ...
+33257          127               126      1
+33258         1027              2164      0
+33259          909              1123      0
+33260         1001              2041      0
+33261          537               415      1
+
+[33262 rows x 3 columns]
+
+Possitive edges:
+       source_node  destination_node  class
+1              452               396      1
+4             1146               912      1
+6             1976               696      1
+7              637               185      1
+8             2054               471      1
+...            ...               ...    ...
+33251         1735               256      1
+33254         1407               676      1
+33256         1573               825      1
+33257          127               126      1
+33261          537               415      1
+
+[16631 rows x 3 columns]
+
+Features:
+       source_node  destination_node  ...  clustering_coef  class
+0             1503              2423  ...         0.000000      0
+1              452               396  ...         0.595000      1
+2               98              2357  ...         0.154589      0
+3             1280              2202  ...         0.000000      0
+4             1146               912  ...         0.088748      1
+...            ...               ...  ...              ...    ...
+33257          127               126  ...         0.116679      1
+33258         1027              2164  ...         0.000000      0
+33259          909              1123  ...         0.012903      0
+33260         1001              2041  ...         0.622222      0
+33261          537               415  ...         0.164674      1
+
+[33262 rows x 7 columns]
+
+Edges with features:
+       source_node  destination_node  ...  clustering_coef  class
+0             1503              2423  ...         0.000000      0
+1              452               396  ...         0.595000      1
+2               98              2357  ...         0.154589      0
+3             1280              2202  ...         0.000000      0
+4             1146               912  ...         0.088748      1
+...            ...               ...  ...              ...    ...
+33257          127               126  ...         0.116679      1
+33258         1027              2164  ...         0.000000      0
+33259          909              1123  ...         0.012903      0
+33260         1001              2041  ...         0.622222      0
+33261          537               415  ...         0.164674      1
+
+[33262 rows x 7 columns]
+
+Data:
+       jaccard_coef  adamic_adar  preferential_attachment  clustering_coef
+0          0.000000     0.000000                        2         0.000000
+1          0.600000     4.240309                      256         0.595000
+2          0.000000     0.000000                      138         0.154589
+3          0.000000     0.000000                        6         0.000000
+4          0.210526     2.272428                      408         0.088748
+...             ...          ...                      ...              ...
+33257      0.888889    12.581613                     2597         0.116679
+33258      0.000000     0.000000                        5         0.000000
+33259      0.000000     0.000000                      155         0.012903
+33260      0.000000     0.000000                       50         0.622222
+33261      0.207317     4.424534                     2420         0.164674
+
+[33262 rows x 4 columns]
+
+Lables:
+       class
+0          0
+1          1
+2          0
+3          0
+4          1
+...      ...
+33257      1
+33258      0
+33259      0
+33260      0
+33261      1
+
+[33262 rows x 1 columns]
+
+Start... Grid search and Cross validation
+LogisticRegression
+kNN
+MLP
+DecisionTree
+RandomForest
+GaussianNB
+Model                 Accuracy(%)    Std(%)    AUC(%)  BestParameters
+------------------  -------------  --------  --------  ----------------------------------------------------------------------
+LogisticRegression          97.91      0.29     99.32  {'max_iter': 100, 'solver': 'newton-cg'}
+kNN                         98.16      0.27     99.14  {'metric': 'manhattan', 'n_neighbors': 15}
+MLP                         98.17      0.28     99.43  {'activation': 'relu', 'learning_rate': 'adaptive', 'max_iter': 500}
+DecisionTree                97.81      0.24     98.42  {'criterion': 'gini', 'max_features': 'log2', 'splitter': 'best'}
+RandomForest                98.07      0.25     99.51  {'criterion': 'entropy', 'max_features': 'auto', 'n_estimators': 1000}
+GaussianNB                  97.94      0.25     99.19  {}
