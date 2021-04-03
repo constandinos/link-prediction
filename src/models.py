@@ -11,10 +11,12 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, roc_auc_score
 from tabulate import tabulate
+from sklearn import tree
+from sklearn.metrics import plot_confusion_matrix
 
 
 def cross_validation(estimator, X, y, score_type, k_folds, num_cpus):
@@ -107,7 +109,17 @@ def grid_search_cross_validation(clf_list, X, y, num_cpus, score_type='accuracy'
         # grid search
         search = GridSearchCV(model, parameters, scoring=score_type, cv=kfold, n_jobs=num_cpus)
         search.fit(X, y)
+
+        # results of grid search
+        params = search.cv_results_['params']
+        mean_test_score = search.cv_results_['mean_test_score']
+        mean_test_score = [x * 100 for x in mean_test_score]
+        df_grid_results = pd.DataFrame({'params': params, 'mean_test_score(%)': mean_test_score})
+        print(tabulate(df_grid_results, headers='keys', showindex=False))
+
+        # get best estimator
         best_parameters.append(search.best_params_)
+
         best_est = search.best_estimator_  # estimator with the best parameters
         best_estimators.append(best_est)
 
@@ -143,9 +155,10 @@ def plot_results(x_labels, y_labels, type_name):
     plt.clf()
 
 
-def predict_probabilities(X, y, model_names, best_estimators):
+def predictions(X, y, model_names, best_estimators):
     """
-    Predict probabilities for each machine learning algorithm.
+    Splits dataset to train and test, predict probabilities, plot decision tree and confusion matrix for each machine
+    learning algorithm.
 
     Parameters
     ----------
@@ -177,14 +190,24 @@ def predict_probabilities(X, y, model_names, best_estimators):
         # predict probabilities
         pred_prob.append(clf.predict_proba(X_test))
 
+        # plot confusion matrix
+        plot_confusion_matrix(clf, X_test, y_test)
+        plt.title(model_names[i])
+        plt.savefig('../results/confusion_matrix_' + model_names[i] + '.png')
+        plt.clf()
+
         # plot decision tree
         if model_names[i] == 'DecisionTree':
-            export_graphviz(clf, out_file='../results/tree.dot', class_names=['negative_edge', 'possitive_edge'],
-                            feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef'],
-                            impurity=False, filled=True)
-            # with open('../results/tree.dot') as f:
-            #    dot_graph = f.read()
-            # graphviz.Source(dot_graph).view('../results/decision_tree')
+            text_representation = tree.export_text(clf)
+            with open('../results/decistion_tree.log', 'w') as fout:
+                fout.write(text_representation)
+            fig = plt.figure(figsize=(25, 20))
+            _ = tree.plot_tree(clf,
+                               feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef'],
+                               class_names=['negative_edge', 'possitive_edge'],
+                               filled=True)
+            fig.savefig('../results/decistion_tree.png')
+            plt.clf()
 
         # weights from logistic regression
         if model_names[i] == 'LogisticRegression':
@@ -275,6 +298,7 @@ sc_X = StandardScaler()
 X = sc_X.fit_transform(X)
 
 # create list with all possible parameters for each estimator
+
 clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg', 'lbfgs', 'liblinear'],
                                                           'max_iter': [100, 500, 1000]}),
             ('kNN', KNeighborsClassifier(), {'n_neighbors': [5, 10, 15, 20],
@@ -289,7 +313,14 @@ clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg'
                                                         'criterion': ['gini', 'entropy'],
                                                         'max_features': ['auto', 'sqrt', 'log2']}),
             ('GaussianNB', GaussianNB(), {})]
-
+"""
+clf_list = [('LogisticRegression', LogisticRegression(), {}),
+            ('kNN', KNeighborsClassifier(), {}),
+            ('MLP', MLPClassifier(), {}),
+            ('DecisionTree', DecisionTreeClassifier(), {}),
+            ('RandomForest', RandomForestClassifier(), {}),
+            ('GaussianNB', GaussianNB(), {})]
+"""
 # grid search and cross validation
 model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y,
                                                                                                         num_cpus)
@@ -301,8 +332,8 @@ header_label = ['Model', 'Accuracy', 'Std', 'BestParameters']
 plot_results(model_names, kfold_accuracy, 'accuracy')
 plot_results(model_names, kfold_std, 'standard_deviation')
 
-# predict probabilities
-y_test, pred_prob = predict_probabilities(X, y, model_names, best_estimators)
+# predict
+y_test, pred_prob = predictions(X, y, model_names, best_estimators)
 
 # plot ROC AUC curve
 auc_list = plot_roc_curve(model_names, pred_prob, y_test)

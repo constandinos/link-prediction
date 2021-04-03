@@ -2,7 +2,7 @@ import pandas as pd
 from networkx import nx
 
 n = 10000  # 10 nodes
-m = n * 3  # 20 edges
+m = n * 2  # 20 edges
 
 G = nx.gnm_random_graph(n, m)
 
@@ -16,4 +16,4 @@ for edge in G.edges():
 edges_df = pd.DataFrame({'source_node': source_node_list, 'destination_node': destination_node_list})
 
 # write edges a file
-edges_df.to_csv('../dataset/erdos.txt', index=False, header=False)
+edges_df.to_csv('../dataset/erdos2.txt', index=False, header=False)

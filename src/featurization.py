@@ -1,8 +1,10 @@
 # python featurization.py petster-hamster-household_edges.csv
 # python featurization.py soc-hamsterster_edges.csv
 
+import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
+import seaborn as sns
 import sys
 
 
@@ -93,6 +95,29 @@ def clustering_coef(G, df_edges, df_features):
     df_features['clustering_coef'] = grade
 
 
+def correlation_analysis(df_features):
+    """
+    Correlation analysis between all features.
+
+    df_features: numpy array
+        The edges with features
+    """
+
+    # Correlation analysis to data
+    corr_matrix = df_features.corr()
+    # Plot results
+    fig, ax = plt.subplots(figsize=(15, 15))
+    ax = sns.heatmap(corr_matrix,
+                     annot=True,
+                     linewidths=0.5,
+                     fmt=".2f",
+                     cmap="YlGnBu");
+    bottom, top = ax.get_ylim()
+    ax.set_ylim(bottom + 0.5, top - 0.5)
+    plt.savefig('../results/correlation_analysis.png')
+    plt.clf()
+
+
 # =============================================================================#
 #                                      MAIN                                    #
 # =============================================================================#
@@ -129,6 +154,10 @@ df_features = df_features.reindex(['source_node', 'destination_node', 'jaccard_c
 print('Features:')
 print(df_features)
 print()
+
+# plot a correlation analysis between features diagram
+correlation_analysis(df_features[['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef', 'class']]
+                     )
 
 # write features in a file
 df_features.to_csv('../dataset/' + fileout + '_features.csv', index=False)
