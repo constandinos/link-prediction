@@ -1,5 +1,14 @@
-# python process_dataset.py petster-hamster-household.txt
-# python process_dataset.py soc-hamsterster.txt
+#######################################################################################################################
+# process_dataset.py
+# This class precess the graph and crete positive and negative edges.
+#
+# Execution commands:
+# python process_dataset.py <name of origin dataset>
+# eg. python process_dataset.py hamsterster.txt
+# <name of origin dataset> = {hamsterster.txt, twitch.txt, github.txt, deezer.txt, facebook.txt, erdos.txt}
+#
+# Created by: Constandinos Demetriou, 2021
+#######################################################################################################################
 
 from sklearn.utils import shuffle
 import networkx as nx

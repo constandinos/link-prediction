@@ -1,5 +1,15 @@
-# python featurization.py petster-hamster-household_edges.csv
-# python featurization.py soc-hamsterster_edges.csv
+#######################################################################################################################
+# featurization.py
+# This class export features from an undirect graph.
+#
+# Execution commands:
+# python featurization.py <name of dataset with edges>
+# eg. python featurization.py hamsterster_edges.csv
+# <name of dataset with edges> = {hamsterster_edges.csv, twitch_edges.csv, github_edges.csv, deezer_edges.csv
+#                                 facebook_edges.csv, erdos_edges.csv}
+#
+# Created by: Constandinos Demetriou, 2021
+#######################################################################################################################
 
 import matplotlib.pyplot as plt
 import networkx as nx

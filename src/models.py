@@ -1,5 +1,16 @@
-# python model.py petster-hamster-household_edges_features.csv
-# python model.py soc-hamsterster_edges_features.csv
+#######################################################################################################################
+# models.py
+# This class classify edges using supervised learning.
+#
+# Execution commands:
+# python models.py <name of dataset with features> <number of cpus>
+# eg. python models.py hamsterster_edges_features.csv 8
+# <name of dataset with features> = {hamsterster_edges_features.csv, twitch_edges_features.csv,
+#                                   github_edges_features.csv, deezer_edges_features.csv, facebook_edges_features.csv,
+#                                   erdos_edges_features.csv}
+#
+# Created by: Constandinos Demetriou, 2021
+#######################################################################################################################
 
 import sys
 import pandas as pd
@@ -116,6 +127,7 @@ def grid_search_cross_validation(clf_list, X, y, num_cpus, score_type='accuracy'
         mean_test_score = [x * 100 for x in mean_test_score]
         df_grid_results = pd.DataFrame({'params': params, 'mean_test_score(%)': mean_test_score})
         print(tabulate(df_grid_results, headers='keys', showindex=False))
+        print()
 
         # get best estimator
         best_parameters.append(search.best_params_)
@@ -203,7 +215,8 @@ def predictions(X, y, model_names, best_estimators):
                 fout.write(text_representation)
             fig = plt.figure(figsize=(25, 20))
             _ = tree.plot_tree(clf,
-                               feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment', 'clustering_coef'],
+                               feature_names=['jaccard_coef', 'adamic_adar', 'preferential_attachment',
+                                              'clustering_coef'],
                                class_names=['negative_edge', 'possitive_edge'],
                                filled=True)
             fig.savefig('../results/decistion_tree.png')
@@ -273,7 +286,7 @@ def plot_roc_curve(model_names, pred_prob, y_test):
 # =============================================================================#
 
 # define input files and num of cpus
-filein = sys.argv[1]  # eg. facebook-wosn-links_edges_class_features.csv
+filein = sys.argv[1]
 num_cpus = int(sys.argv[2])
 
 # read input data
@@ -293,7 +306,6 @@ print(y)
 print()
 
 # standardize features by removing the mean and scaling to unit variance
-# https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
 sc_X = StandardScaler()
 X = sc_X.fit_transform(X)
 
@@ -313,14 +325,7 @@ clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg'
                                                         'criterion': ['gini', 'entropy'],
                                                         'max_features': ['auto', 'sqrt', 'log2']}),
             ('GaussianNB', GaussianNB(), {})]
-"""
-clf_list = [('LogisticRegression', LogisticRegression(), {}),
-            ('kNN', KNeighborsClassifier(), {}),
-            ('MLP', MLPClassifier(), {}),
-            ('DecisionTree', DecisionTreeClassifier(), {}),
-            ('RandomForest', RandomForestClassifier(), {}),
-            ('GaussianNB', GaussianNB(), {})]
-"""
+
 # grid search and cross validation
 model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y,
                                                                                                         num_cpus)
