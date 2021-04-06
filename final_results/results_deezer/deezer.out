@@ -100,6 +100,7 @@ Features:
 996403        19261             45862  ...         0.005602      0
 
 [996404 rows x 7 columns]
+
 Edges with features:
         source_node  destination_node  ...  clustering_coef  class
 0             11123             23264  ...         0.043299      1
@@ -150,16 +151,104 @@ Lables:
 
 Start... Grid search and Cross validation
 LogisticRegression
+params                                       mean_test_score(%)
+-----------------------------------------  --------------------
+{'max_iter': 100, 'solver': 'newton-cg'}                87.7956
+{'max_iter': 100, 'solver': 'lbfgs'}                    87.7956
+{'max_iter': 100, 'solver': 'liblinear'}                87.7955
+{'max_iter': 500, 'solver': 'newton-cg'}                87.7956
+{'max_iter': 500, 'solver': 'lbfgs'}                    87.7956
+{'max_iter': 500, 'solver': 'liblinear'}                87.7955
+{'max_iter': 1000, 'solver': 'newton-cg'}               87.7956
+{'max_iter': 1000, 'solver': 'lbfgs'}                   87.7956
+{'max_iter': 1000, 'solver': 'liblinear'}               87.7955
+
 kNN
+params                                        mean_test_score(%)
+------------------------------------------  --------------------
+{'metric': 'euclidean', 'n_neighbors': 5}                86.634
+{'metric': 'euclidean', 'n_neighbors': 10}               87.8748
+{'metric': 'euclidean', 'n_neighbors': 15}               87.9337
+{'metric': 'euclidean', 'n_neighbors': 20}               88.1196
+{'metric': 'minkowski', 'n_neighbors': 5}                86.634
+{'metric': 'minkowski', 'n_neighbors': 10}               87.8748
+{'metric': 'minkowski', 'n_neighbors': 15}               87.9337
+{'metric': 'minkowski', 'n_neighbors': 20}               88.1196
+{'metric': 'manhattan', 'n_neighbors': 5}                86.6361
+{'metric': 'manhattan', 'n_neighbors': 10}               87.8731
+{'metric': 'manhattan', 'n_neighbors': 15}               87.9215
+{'metric': 'manhattan', 'n_neighbors': 20}               88.1289
+
 MLP
+params                                                                     mean_test_score(%)
+-----------------------------------------------------------------------  --------------------
+{'activation': 'tanh', 'learning_rate': 'constant', 'max_iter': 200}                  88.1273
+{'activation': 'tanh', 'learning_rate': 'constant', 'max_iter': 500}                  88.1383
+{'activation': 'tanh', 'learning_rate': 'constant', 'max_iter': 1000}                 88.1617
+{'activation': 'tanh', 'learning_rate': 'invscaling', 'max_iter': 200}                88.1422
+{'activation': 'tanh', 'learning_rate': 'invscaling', 'max_iter': 500}                88.1513
+{'activation': 'tanh', 'learning_rate': 'invscaling', 'max_iter': 1000}               88.1393
+{'activation': 'tanh', 'learning_rate': 'adaptive', 'max_iter': 200}                  88.1013
+{'activation': 'tanh', 'learning_rate': 'adaptive', 'max_iter': 500}                  88.1501
+{'activation': 'tanh', 'learning_rate': 'adaptive', 'max_iter': 1000}                 88.1399
+{'activation': 'relu', 'learning_rate': 'constant', 'max_iter': 200}                  88.2321
+{'activation': 'relu', 'learning_rate': 'constant', 'max_iter': 500}                  88.2246
+{'activation': 'relu', 'learning_rate': 'constant', 'max_iter': 1000}                 88.2062
+{'activation': 'relu', 'learning_rate': 'invscaling', 'max_iter': 200}                88.2145
+{'activation': 'relu', 'learning_rate': 'invscaling', 'max_iter': 500}                88.2254
+{'activation': 'relu', 'learning_rate': 'invscaling', 'max_iter': 1000}               88.2201
+{'activation': 'relu', 'learning_rate': 'adaptive', 'max_iter': 200}                  88.2198
+{'activation': 'relu', 'learning_rate': 'adaptive', 'max_iter': 500}                  88.2294
+{'activation': 'relu', 'learning_rate': 'adaptive', 'max_iter': 1000}                 88.2277
+
 DecisionTree
+params                                                                    mean_test_score(%)
+----------------------------------------------------------------------  --------------------
+{'criterion': 'gini', 'max_features': 'auto', 'splitter': 'best'}                    85.9762
+{'criterion': 'gini', 'max_features': 'auto', 'splitter': 'random'}                  85.9476
+{'criterion': 'gini', 'max_features': 'sqrt', 'splitter': 'best'}                    85.9376
+{'criterion': 'gini', 'max_features': 'sqrt', 'splitter': 'random'}                  85.9599
+{'criterion': 'gini', 'max_features': 'log2', 'splitter': 'best'}                    85.9256
+{'criterion': 'gini', 'max_features': 'log2', 'splitter': 'random'}                  85.9449
+{'criterion': 'entropy', 'max_features': 'auto', 'splitter': 'best'}                 85.964
+{'criterion': 'entropy', 'max_features': 'auto', 'splitter': 'random'}               85.9504
+{'criterion': 'entropy', 'max_features': 'sqrt', 'splitter': 'best'}                 85.9575
+{'criterion': 'entropy', 'max_features': 'sqrt', 'splitter': 'random'}               85.9405
+{'criterion': 'entropy', 'max_features': 'log2', 'splitter': 'best'}                 85.9461
+{'criterion': 'entropy', 'max_features': 'log2', 'splitter': 'random'}               85.944
+
 RandomForest
+params                                                                    mean_test_score(%)
+----------------------------------------------------------------------  --------------------
+{'criterion': 'gini', 'max_features': 'auto', 'n_estimators': 100}                   86.7197
+{'criterion': 'gini', 'max_features': 'auto', 'n_estimators': 500}                   86.7574
+{'criterion': 'gini', 'max_features': 'auto', 'n_estimators': 1000}                  86.7695
+{'criterion': 'gini', 'max_features': 'sqrt', 'n_estimators': 100}                   86.7188
+{'criterion': 'gini', 'max_features': 'sqrt', 'n_estimators': 500}                   86.7578
+{'criterion': 'gini', 'max_features': 'sqrt', 'n_estimators': 1000}                  86.7635
+{'criterion': 'gini', 'max_features': 'log2', 'n_estimators': 100}                   86.7181
+{'criterion': 'gini', 'max_features': 'log2', 'n_estimators': 500}                   86.7531
+{'criterion': 'gini', 'max_features': 'log2', 'n_estimators': 1000}                  86.7562
+{'criterion': 'entropy', 'max_features': 'auto', 'n_estimators': 100}                86.7107
+{'criterion': 'entropy', 'max_features': 'auto', 'n_estimators': 500}                86.7508
+{'criterion': 'entropy', 'max_features': 'auto', 'n_estimators': 1000}               86.7488
+{'criterion': 'entropy', 'max_features': 'sqrt', 'n_estimators': 100}                86.7251
+{'criterion': 'entropy', 'max_features': 'sqrt', 'n_estimators': 500}                86.7494
+{'criterion': 'entropy', 'max_features': 'sqrt', 'n_estimators': 1000}               86.7514
+{'criterion': 'entropy', 'max_features': 'log2', 'n_estimators': 100}                86.7224
+{'criterion': 'entropy', 'max_features': 'log2', 'n_estimators': 500}                86.7436
+{'criterion': 'entropy', 'max_features': 'log2', 'n_estimators': 1000}               86.7477
+
 GaussianNB
+params      mean_test_score(%)
+--------  --------------------
+{}                     87.4658
+
 Model                 Accuracy(%)    Std(%)    AUC(%)  BestParameters
-------------------  -------------  --------  --------  ----------------------------------------------------------------------
+------------------  -------------  --------  --------  --------------------------------------------------------------------
 LogisticRegression          87.8       0.08     92.7   {'max_iter': 100, 'solver': 'newton-cg'}
-kNN                         88.13      0.04     92.69  {'metric': 'euclidean', 'n_neighbors': 20}
-MLP                         88.22      0.06     93.35  {'activation': 'relu', 'learning_rate': 'invscaling', 'max_iter': 200}
-DecisionTree                85.98      0.08     86.79  {'criterion': 'entropy', 'max_features': 'log2', 'splitter': 'best'}
-RandomForest                86.78      0.04     92.03  {'criterion': 'gini', 'max_features': 'sqrt', 'n_estimators': 1000}
+kNN                         88.13      0.04     92.71  {'metric': 'manhattan', 'n_neighbors': 20}
+MLP                         88.21      0.06     93.38  {'activation': 'relu', 'learning_rate': 'constant', 'max_iter': 200}
+DecisionTree                85.93      0.06     86.78  {'criterion': 'gini', 'max_features': 'auto', 'splitter': 'best'}
+RandomForest                86.79      0.05     92.03  {'criterion': 'gini', 'max_features': 'auto', 'n_estimators': 1000}
 GaussianNB                  87.47      0.05     89.15  {}
