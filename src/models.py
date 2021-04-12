@@ -330,9 +330,6 @@ clf_list = [('LogisticRegression', LogisticRegression(), {'solver': ['newton-cg'
 model_names, best_estimators, best_parameters, kfold_accuracy, kfold_std = grid_search_cross_validation(clf_list, X, y,
                                                                                                         num_cpus)
 
-# print results
-header_label = ['Model', 'Accuracy', 'Std', 'BestParameters']
-
 # plot results from cross validation
 plot_results(model_names, kfold_accuracy, 'accuracy')
 plot_results(model_names, kfold_std, 'standard_deviation')
