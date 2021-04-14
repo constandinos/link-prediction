@@ -27,7 +27,7 @@ Installation
 Make sure you have [python 3.8](https://www.python.org/downloads/release/python-380/)  installed in your system. 
 The following command clone the repository.
 ```bash
-https://github.com/constandinos/link-prediction
+git clone https://github.com/constandinos/link-prediction
 cd link-prediction
 ```
 
