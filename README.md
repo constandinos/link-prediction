@@ -83,4 +83,4 @@ References
 ---
 * [The Link Prediction Problem for Social Networks](http://www.cs.cornell.edu/info/people/kleinber/link-pred.pdf)
 * [Link Prediction using Supervised Learning](https://archive.siam.org/meetings/sdm06/workproceed/Link%20Analysis/12.pdf)
-* [Graph-based Features for Supervised Link Prediction](https://www.semanticscholar.org/paper/Graph-based-features-for-supervised-link-prediction-Cukierski-Hamner/499c6a8982772e04eeea9c137ceb956a9687dc80)
+* [Graph-based Features for Supervised Link Prediction](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6033365&casa_token=NrziWKDlFlwAAAAA:Wn5gNsKT31w57DXMYofZpTlqNBLCF2LUjM9vaqCqNblL_mMZ9ZkPS6AK2bBvp7eYKTF1y38vakQ&tag=1)
