@@ -72,6 +72,13 @@ eg. python models.py hamsterster_edges_features.csv 8
 <name of dataset with features> = {hamsterster_edges_features.csv, twitch_edges_features.csv, github_edges_features.csv, deezer_edges_features.csv, facebook_edges_features.csv, erdos_edges_features.csv}
 ```
 
+#### runAll.sh
+This is a bash script to run all experiments together.
+```bash
+chmod +x runAll.sh
+./runAll &
+```
+
 References
 ---
 * [The Link Prediction Problem for Social Networks](http://www.cs.cornell.edu/info/people/kleinber/link-pred.pdf)
