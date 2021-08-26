@@ -4,9 +4,9 @@ Have you ever wondered who your next Facebook connection might be? Curious who t
 
 ## Preamble
 
-Author: Constandinos Demetriou
+Author: [Constandinos Demetriou](https://github.com/constandinos)
 
-Supervisor: Dr. [Charalampos Tsourakakis](https://tsourakakis.com/)
+Supervisor: [Dr. Charalampos Tsourakakis](https://tsourakakis.com/)
 
 Copyright (c) 2021
 
