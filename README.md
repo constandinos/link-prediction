@@ -1,14 +1,12 @@
-Link prediction in Social Networks
-================
+# Link prediction in Social Networks
 
 Have you ever wondered who your next Facebook connection might be? Curious who the next request might come from?What if I told you there was a way to predict this? Social networks such as facebook can be represented by graphs in which users can represent eith nodes and relationships with edges. Link prediction is one of the most important research topics in the area of graphs and networks. The purpose of link prediction is to identify pairs of nodes that will form a link in the future. In this work we used the topology of undirected graphs from social networks to export features with which we trained classification supervised learning algorithms.
 
-Preamble
----
+## Preamble
 
 Author: Constandinos Demetriou
 
-Supervisor: Dr. Charalampos Tsourakakis
+Supervisor: Dr. [Charalampos Tsourakakis](https://tsourakakis.com/)
 
 Copyright (c) 2021
 
@@ -21,6 +19,54 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 
 You should have received a copy of the GNU General Public License along with this program.
 If not, see [http://www.gnu.org/licenses/]([http://www.gnu.org/licenses/)
+
+## Introduction
+Link prediction is one of the most important research topics in the field of graphs and networks. The objective of link prediction is to identify pairs of nodes that will either form a link or not in the future.
+
+![Image](figures/network.png "People network")
+
+Link prediction has a ton of use in real-world applications. Here are some of the important use cases of link prediction:
+* Predict which customers are likely to buy what products on online marketplaces like Amazon. It can help in making better product recommendations
+* Suggest interactions or collaborations between employees in an organization
+* Extract vital insights from terrorist networks
+
+In network theory, link prediction is the problem of predicting the existence of a link between two entities in a network. The Figure 1 shows a non-directed graph at a given time t. On the other hand, the Figure 2 shows the same graph at time t + n. We observe that in a future time t + n three edges are added between the nodes which are shown in red. Our goal in this work is to predict these edges that will be added to the graph.
+
+![Image](figures/link-pred.png "Example of link prediction")
+
+If we could represent a graph in the form of a structured dataset with a set of features, then we could use machine learning algorithms to predict the formation of links between unrelated pairs of nodes in the graph.
+
+## Data
+In this work, datasets with non-directed graphs from [SNAP](https://snap.stanford.edu/data/) and [KONECT](http://konect.cc/networks/) databases were used. Graphs related to social networks were selected:
+* **hamsterster:** this network contains friendships and family links between the users of the website hamsterster.com with the nodes representing the users and the edges representing the friendship relationship between the users
+* **twitch:** is a network of Twitch users consisting of gamers who stream to a specific language with the nodes being the users themselves and the edges being friendships with each other
+* **github:** is the membership network of the software development hosting site GitHub. The network is bipartite and contains users and projects, with links denoting that a user is a member of a project.
+* **deezer:** is a music streaming service where the nodes represent the users and the edges are mutual friendships
+* **facebook:** contains friendship data of Facebook users. A node represents a user and an edge represents a friendship between two users. 
+* **erdos:** a random graph
+
+|Dataset| Number of nodes|Number of edges|Average degree|
+| ------|:--------------:|:-------------:|:------------:|
+|hamsterster|2426|16631|13.71|
+|twitch|9498|153138|32.25|
+|github|37700|289003|15.33|
+|deezer|54573|498202|18.26|
+|facebook|63731|817035|25.64|
+|erdos|9967|30000|6.02|
+
+## Feature Extraction
+* Jaccard’s coefficient
+* Adamic Adar
+* Preferential attachment
+* Clustering coefficient
+
+## Supervised binary classification
+* Logistic Regression
+* k-Nearest Neighbors (kNN)
+* Multilayer Perceptron (MLP)
+* Decision Tree
+* Random Forest
+* Gaussian Naive Bayes
 
 Installation
 ----
